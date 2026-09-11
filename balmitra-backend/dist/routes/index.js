@@ -23,6 +23,7 @@ const homepage_hero_routes_1 = __importDefault(require("../modules/homepage-hero
 const homepage_advertisement_routes_1 = __importDefault(require("../modules/homepage-advertisement/homepage-advertisement.routes"));
 const homepage_section_routes_1 = __importDefault(require("../modules/homepage-section/homepage-section.routes"));
 const homepage_product_routes_1 = __importDefault(require("../modules/homepage-product/homepage-product.routes"));
+const trust_feature_routes_1 = __importDefault(require("../modules/trust-feature/trust-feature.routes"));
 const router = (0, express_1.Router)();
 router.get("/health", (req, res) => {
     res.json({
@@ -53,4 +54,6 @@ router.use("/homepage/heroes", homepage_hero_routes_1.default);
 router.use("/homepage/advertisements", homepage_advertisement_routes_1.default);
 router.use("/homepage/sections", homepage_section_routes_1.default);
 router.use("/homepage/products", homepage_product_routes_1.default);
+router.use("/admin/homepage/trust-features", trust_feature_routes_1.default);
+router.use("/homepage/trust-features", trust_feature_routes_1.default);
 exports.default = router;
