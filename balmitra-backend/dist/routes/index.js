@@ -1,0 +1,56 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const banner_routes_1 = __importDefault(require("../modules/banner/banner.routes"));
+const admin_routes_1 = __importDefault(require("../modules/admin/admin.routes"));
+const product_routes_1 = __importDefault(require("../modules/product/product.routes"));
+const public_product_routes_1 = __importDefault(require("../modules/product/public-product.routes"));
+const category_routes_1 = __importDefault(require("../modules/category/category.routes"));
+const order_routes_1 = __importDefault(require("../modules/order/order.routes"));
+const customer_1 = require("../modules/customer");
+const coupon_1 = require("../modules/coupon");
+const settings_1 = require("../modules/settings");
+const payment_routes_1 = __importDefault(require("../modules/payment/payment.routes"));
+const customer_auth_routes_1 = __importDefault(require("../modules/customer-auth/customer-auth.routes"));
+const vendor_enquiry_routes_1 = __importDefault(require("../modules/vendor-enquiry/vendor-enquiry.routes"));
+const franchise_enquiry_routes_1 = __importDefault(require("../modules/franchise-enquiry/franchise-enquiry.routes"));
+const public_category_routes_1 = __importDefault(require("../modules/category/public-category.routes"));
+const subcategory_routes_1 = __importDefault(require("../modules/subcategory/subcategory.routes"));
+const homepage_hero_routes_1 = __importDefault(require("../modules/homepage-hero/homepage-hero.routes"));
+const homepage_advertisement_routes_1 = __importDefault(require("../modules/homepage-advertisement/homepage-advertisement.routes"));
+const homepage_section_routes_1 = __importDefault(require("../modules/homepage-section/homepage-section.routes"));
+const homepage_product_routes_1 = __importDefault(require("../modules/homepage-product/homepage-product.routes"));
+const router = (0, express_1.Router)();
+router.get("/health", (req, res) => {
+    res.json({
+        success: true,
+        message: "API is healthy",
+    });
+});
+router.use("/admin", admin_routes_1.default);
+router.use("/admin/categories", category_routes_1.default);
+router.use("/admin/products", product_routes_1.default);
+router.use("/admin/banners", banner_routes_1.default);
+router.use("/admin/homepage/heroes", homepage_hero_routes_1.default);
+router.use("/admin/homepage/advertisements", homepage_advertisement_routes_1.default);
+router.use("/admin/homepage/products", homepage_product_routes_1.default);
+router.use("/categories", public_category_routes_1.default);
+router.use("/subcategories", subcategory_routes_1.default);
+router.use("/products", public_product_routes_1.default);
+router.use("/banners", banner_routes_1.default);
+router.use("/orders", order_routes_1.default);
+router.use("/customers", customer_1.customerRoutes);
+router.use("/coupons", coupon_1.couponRoutes);
+router.use("/settings", settings_1.settingsRoutes);
+router.use("/payments", payment_routes_1.default);
+router.use("/auth/customer", customer_auth_routes_1.default);
+router.use("/vendor-enquiries", vendor_enquiry_routes_1.default);
+router.use("/franchise-enquiries", franchise_enquiry_routes_1.default);
+router.use("/homepage/heroes", homepage_hero_routes_1.default);
+router.use("/homepage/advertisements", homepage_advertisement_routes_1.default);
+router.use("/homepage/sections", homepage_section_routes_1.default);
+router.use("/homepage/products", homepage_product_routes_1.default);
+exports.default = router;

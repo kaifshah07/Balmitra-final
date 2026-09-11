@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const banner_controller_1 = require("./banner.controller");
+const upload_middleware_1 = require("../../middleware/upload.middleware");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.get("/", banner_controller_1.BannerController.getAll);
+router.get("/:id", banner_controller_1.BannerController.getById);
+router.post("/", auth_middleware_1.authenticateAdmin, upload_middleware_1.upload.single("image"), banner_controller_1.BannerController.create);
+router.put("/:id", auth_middleware_1.authenticateAdmin, upload_middleware_1.upload.single("image"), banner_controller_1.BannerController.update);
+router.delete("/:id", auth_middleware_1.authenticateAdmin, banner_controller_1.BannerController.delete);
+exports.default = router;
