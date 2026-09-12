@@ -2,12 +2,16 @@ import OfferStrip from "@/components/homepage/TopBar/OfferStrip";
 import MegaMenu from "@/components/homepage/MegaMenu/MegaMenu";
 import MainHero from "@/components/homepage/Hero/MainHero";
 import CategoryGrid from "@/components/homepage/Categories/CategoryGrid";
-import AgeGroupGrid from "@/components/homepage/Categories/AgeGroupGrid";
 import FlashSale from "@/components/homepage/FlashSale/FlashSale";
 import ProductGrid from "@/components/homepage/Products/ProductGrid";
 import WideBanner from "@/components/homepage/PromoBanners/WideBanner";
 import BannerStrip from "@/components/homepage/PromoBanners/BannerStrip";
 import CollectionStrip from "@/components/homepage/Collections/CollectionStrip";
+import BrandSlider from "@/components/homepage/Brands/BrandSlider";
+import CharacterZone from "@/components/homepage/Characters/CharacterZone";
+import CollectionStrip from "@/components/homepage/Collections/CollectionStrip";
+import BusinessStrip from "@/components/homepage/BusinessStrip/BusinessStrip";
+>>>>>>> cb1d32edad671b2eaaadc52828aabaafa197532f
 import TrustSection from "@/components/homepage/Trust/TrustSection";
 
 export default function HomePage() {
@@ -15,26 +19,51 @@ export default function HomePage() {
     <>
       <OfferStrip />
       <MegaMenu />
-      <MainHero />
-      <CategoryGrid />
-      <FlashSale />
-      <WideBanner />
-      <AgeGroupGrid />
       
+      {/* 1. Hero Slider */}
+      <MainHero />
+      
+      {/* 2. Categories */}
+      <CategoryGrid />
+      
+      {/* 3. Advertisements */}
+      <WideBanner />
+      
+      {/* 4. Flash Sale */}
+      <FlashSale />
+      
+      {/* 5. Featured Products */}
+      <ProductGrid type="featured" title="Featured Collection" />
+      
+      {/* 6. Trending Products */}
       <ProductGrid type="trending" title="Trending Products" />
       
-      <BannerStrip position="banner_strip_1" title="Special Offers For You" />
+      {/* 7. Brands */}
+      <BrandSlider />
       
-      <ProductGrid type="featured" title="Featured Collection" />
-            
-      <BannerStrip position="banner_strip_2" title="Trending Deals & Curations" />
+      {/* 8. Character Zone */}
+      <CharacterZone />
       
+      {/* 9. New Arrivals */}
       <ProductGrid type="new-arrivals" title="New Arrivals" />
       
+<<<<<<< HEAD
       <CollectionStrip />
             
       <ProductGrid type="best-sellers" title="Best Sellers" />
       
+=======
+      {/* 10. Shop By Collection */}
+      <CollectionStrip />
+      
+      {/* 11. Best Sellers */}
+      <ProductGrid type="best-sellers" title="Best Sellers" />
+      
+      {/* 12. Business Strip */}
+      <BusinessStrip />
+      
+      {/* 13. Trust Section */}
+>>>>>>> cb1d32edad671b2eaaadc52828aabaafa197532f
       <TrustSection />
       
     </>

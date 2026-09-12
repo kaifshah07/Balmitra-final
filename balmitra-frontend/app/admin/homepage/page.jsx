@@ -31,6 +31,22 @@ const sections = [
     title: "Best Sellers",
     href: "/admin/homepage/best-sellers",
   },
+  {
+    title: "Brands",
+    href: "/admin/homepage/brands",
+  },
+  {
+    title: "Character Zone",
+    href: "/admin/homepage/character-zone",
+  },
+  {
+    title: "Trust Section",
+    href: "/admin/homepage/trust-section",
+  },
+  {
+    title: "Business Strip",
+    href: "/admin/homepage/business-strip",
+  },
 ];
 
 export default function HomepageManager() {
