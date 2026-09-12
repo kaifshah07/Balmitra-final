@@ -4,10 +4,10 @@ const items = [
   "🚚 Fast Delivery",
   "🔒 Secure Payments",
   "🔄 Easy Returns",
-  "🧸 Genuine Products",
-  "⭐ Trusted By Parents",
-  "💳 Safe Checkout",
-  "🏆 Top Kids Marketplace",
+  "🏅 Genuine Products",
+  "❤️ Trusted By Parents",
+  "🛡️ Safe Checkout",
+  "🌟 Top Kids Marketplace",
   "🎁 Daily Offers",
 ];
 

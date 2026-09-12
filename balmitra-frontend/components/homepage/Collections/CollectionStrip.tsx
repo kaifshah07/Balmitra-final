@@ -11,7 +11,7 @@ const collections = [
     color: "from-blue-500 to-cyan-400"
   },
   {
-    title: "Winter Wear",
+    title: "Winter Collection",
     image: "https://images.unsplash.com/photo-1519278409-1f56fdba3fce?auto=format&fit=crop&q=80&w=400",
     slug: "/products?collection=winter",
     color: "from-indigo-500 to-purple-400"
@@ -23,10 +23,28 @@ const collections = [
     color: "from-pink-500 to-rose-400"
   },
   {
-    title: "Play Time Toys",
+    title: "Birthday Gifts",
+    image: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=400",
+    slug: "/products?collection=birthday",
+    color: "from-fuchsia-500 to-pink-400"
+  },
+  {
+    title: "Feeding Collection",
+    image: "https://images.unsplash.com/photo-1524055988636-436cfa46e59e?auto=format&fit=crop&q=80&w=400",
+    slug: "/products?collection=feeding",
+    color: "from-teal-500 to-emerald-400"
+  },
+  {
+    title: "Play Time Collection",
     image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=400",
     slug: "/products?collection=toys",
     color: "from-orange-500 to-amber-400"
+  },
+  {
+    title: "Summer Collection",
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=400",
+    slug: "/products?collection=summer",
+    color: "from-yellow-500 to-orange-400"
   }
 ];
 
@@ -38,9 +56,6 @@ export default function CollectionStrip() {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
             Shop By Collection
           </h2>
-          <Link href="/collections" className="text-sm font-semibold text-pink-600 hover:underline">
-            View All Collections +'
-          </Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">

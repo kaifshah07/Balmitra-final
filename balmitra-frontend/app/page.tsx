@@ -7,6 +7,8 @@ import FlashSale from "@/components/homepage/FlashSale/FlashSale";
 import ProductGrid from "@/components/homepage/Products/ProductGrid";
 import WideBanner from "@/components/homepage/PromoBanners/WideBanner";
 import BannerStrip from "@/components/homepage/PromoBanners/BannerStrip";
+import CollectionStrip from "@/components/homepage/Collections/CollectionStrip";
+import TrustSection from "@/components/homepage/Trust/TrustSection";
 
 export default function HomePage() {
   return (
@@ -28,8 +30,12 @@ export default function HomePage() {
       <BannerStrip position="banner_strip_2" title="Trending Deals & Curations" />
       
       <ProductGrid type="new-arrivals" title="New Arrivals" />
+      
+      <CollectionStrip />
             
       <ProductGrid type="best-sellers" title="Best Sellers" />
+      
+      <TrustSection />
       
     </>
   );
