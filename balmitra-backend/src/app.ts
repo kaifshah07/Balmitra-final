@@ -16,7 +16,8 @@ app.use(helmet());
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://balmitra.vercel.app",
+  "https://balmitra-final-5ybq.vercel.app",
+  "https://balmitra-final.vercel.app",
 ];
 
 app.use(
