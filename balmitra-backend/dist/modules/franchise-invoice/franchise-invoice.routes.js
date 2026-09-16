@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const franchise_invoice_controller_1 = require("./franchise-invoice.controller");
+const auth_middleware_1 = require("../../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.use(auth_middleware_1.authenticateFranchise);
+router.post("/", franchise_invoice_controller_1.FranchiseInvoiceController.generate);
+router.get("/me", franchise_invoice_controller_1.FranchiseInvoiceController.getMyInvoices);
+exports.default = router;

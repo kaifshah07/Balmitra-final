@@ -70,6 +70,11 @@ class ProductService {
                     data.discountPrice !== null
                     ? Number(data.discountPrice)
                     : null,
+                franchisePrice: data.franchisePrice !== undefined &&
+                    data.franchisePrice !== "" &&
+                    data.franchisePrice !== null
+                    ? Number(data.franchisePrice)
+                    : null,
                 stock: Number(data.stock),
                 thumbnail: thumbnailUrl,
                 thumbnailPublicId: thumbnailPublicId,
@@ -107,6 +112,7 @@ class ProductService {
     // =========================================================
     static async getAll() {
         return database_1.prisma.product.findMany({
+            where: { isDeleted: false },
             include: {
                 category: true,
                 subcategory: true,
@@ -213,6 +219,13 @@ class ProductService {
                     ? null
                     : Number(data.discountPrice);
         }
+        if (data.franchisePrice !== undefined) {
+            updateData.franchisePrice =
+                data.franchisePrice === "" ||
+                    data.franchisePrice === null
+                    ? null
+                    : Number(data.franchisePrice);
+        }
         // -------------------------------------------------------
         // Stock
         // -------------------------------------------------------
@@ -311,10 +324,9 @@ class ProductService {
     // DELETE PRODUCT
     // =========================================================
     static async delete(id) {
-        return database_1.prisma.product.delete({
-            where: {
-                id,
-            },
+        return database_1.prisma.product.update({
+            where: { id },
+            data: { isDeleted: true },
         });
     }
     // =========================================================
@@ -383,6 +395,7 @@ class ProductService {
         else if (sort === "price_desc") {
             orderBy = { price: "desc" };
         }
+        where.isDeleted = false;
         return database_1.prisma.product.findMany({
             where,
             include: {
@@ -400,6 +413,7 @@ class ProductService {
             where: {
                 id,
                 isActive: true,
+                isDeleted: false,
             },
             include: {
                 category: true,

@@ -14,7 +14,7 @@ export class HomepageProductService {
   static async getProducts(type: string) {
     const normalized = normalizeSectionType(type);
 
-    const baseWhere: any = { isActive: true };
+    let baseWhere: any = { isActive: true, isDeleted: false };
 
     switch (normalized) {
       case "featured":

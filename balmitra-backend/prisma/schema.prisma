@@ -70,6 +70,7 @@ model Product {
   ageGroup          String?
   price             Decimal        @db.Decimal(10, 2)
   discountPrice     Decimal?       @db.Decimal(10, 2)
+  franchisePrice    Decimal?       @db.Decimal(10, 2)
   stock             Int            @default(0)
   thumbnail         String?
   thumbnailPublicId String?
@@ -77,6 +78,7 @@ model Product {
   isTrending        Boolean        @default(false)
   isNewArrival      Boolean        @default(false)
   isActive          Boolean        @default(true)
+  isDeleted         Boolean        @default(false)
   metaTitle         String?
   metaDescription   String?
   categoryId        Int
@@ -86,6 +88,9 @@ model Product {
   isBestSeller      Boolean        @default(false)
   isFlashSale       Boolean        @default(false)
   orderItems        OrderItem[]
+  franchiseOrderItems FranchiseOrderItem[]
+  franchiseStocks     FranchiseStock[]
+  franchiseInvoiceItems FranchiseInvoiceItem[]
   gallery           ProductImage[]
   category          Category       @relation(fields: [categoryId], references: [id])
   subcategory       Subcategory?   @relation(fields: [subcategoryId], references: [id])
@@ -429,4 +434,109 @@ enum FranchiseEnquiryStatus {
   IN_PROGRESS
   CONVERTED
   REJECTED
+}
+
+model FranchiseUser {
+  id              Int       @id @default(autoincrement())
+  franchiseId     String    @unique
+  fullName        String
+  email           String    @unique
+  phone           String    @unique
+  password        String
+  roleTier        String
+  gstNumber       String?
+  parentId        Int?
+  parent          FranchiseUser?  @relation("FranchiseHierarchy", fields: [parentId], references: [id])
+  children        FranchiseUser[] @relation("FranchiseHierarchy")
+  address         String
+  city            String
+  state           String
+  pincode         String
+  businessName    String
+  shopName        String
+  isActive        Boolean   @default(true)
+  otpCode         String?
+  otpExpiresAt    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  orders          FranchiseOrder[]
+  stocks          FranchiseStock[]
+  invoices        FranchiseInvoice[]
+
+  @@map("franchise_users")
+}
+
+model FranchiseOrder {
+  id              Int       @id @default(autoincrement())
+  orderNumber     String    @unique
+  franchiseId     Int
+  totalAmount     Decimal   @db.Decimal(10, 2)
+  paymentStatus   PaymentStatus @default(PENDING)
+  orderStatus     OrderStatus   @default(PENDING)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  franchise       FranchiseUser @relation(fields: [franchiseId], references: [id])
+  items           FranchiseOrderItem[]
+
+  @@map("franchise_orders")
+}
+
+model FranchiseOrderItem {
+  id              Int       @id @default(autoincrement())
+  quantity        Int
+  price           Decimal   @db.Decimal(10, 2)
+  productId       Int
+  orderId         Int
+  
+  order           FranchiseOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product         Product        @relation(fields: [productId], references: [id])
+
+  @@map("franchise_order_items")
+}
+
+model FranchiseStock {
+  id              Int       @id @default(autoincrement())
+  franchiseId     Int
+  productId       Int
+  quantity        Int       @default(0)
+  
+  franchise       FranchiseUser @relation(fields: [franchiseId], references: [id])
+  product         Product       @relation(fields: [productId], references: [id])
+
+  @@unique([franchiseId, productId])
+  @@map("franchise_stocks")
+}
+
+model FranchiseInvoice {
+  id              Int       @id @default(autoincrement())
+  invoiceNumber   String    @unique
+  franchiseId     Int
+  customerName    String?
+  customerPhone   String?
+  totalAmount     Decimal   @db.Decimal(10, 2)
+  taxAmount       Decimal   @db.Decimal(10, 2)
+  discount        Decimal?  @db.Decimal(10, 2)
+  paymentMethod   PaymentMethod
+  createdAt       DateTime  @default(now())
+  
+  franchise       FranchiseUser @relation(fields: [franchiseId], references: [id])
+  items           FranchiseInvoiceItem[]
+
+  @@map("franchise_invoices")
+}
+
+model FranchiseInvoiceItem {
+  id              Int       @id @default(autoincrement())
+  invoiceId       Int
+  productId       Int
+  quantity        Int
+  price           Decimal   @db.Decimal(10, 2)
+  taxRate         Decimal   @db.Decimal(5, 2) @default(18.00)
+  
+  invoice         FranchiseInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  product         Product          @relation(fields: [productId], references: [id])
+
+  @@map("franchise_invoice_items")
 }

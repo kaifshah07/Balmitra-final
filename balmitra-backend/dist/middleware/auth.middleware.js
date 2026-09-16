@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.requireSuperAdmin = exports.requireAdmin = exports.authenticateAdmin = void 0;
+exports.authenticateFranchise = exports.requireSuperAdmin = exports.requireAdmin = exports.authenticateAdmin = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authenticateAdmin = (req, res, next) => {
     try {
@@ -55,3 +55,22 @@ const requireSuperAdmin = (req, res, next) => {
     next();
 };
 exports.requireSuperAdmin = requireSuperAdmin;
+const authenticateFranchise = (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ success: false, message: "Access token required" });
+        }
+        const token = authHeader.split(" ")[1];
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        if (decoded.role !== "franchise") {
+            return res.status(403).json({ success: false, message: "Franchise access required" });
+        }
+        req.user = decoded;
+        next();
+    }
+    catch (error) {
+        return res.status(401).json({ success: false, message: "Invalid token" });
+    }
+};
+exports.authenticateFranchise = authenticateFranchise;

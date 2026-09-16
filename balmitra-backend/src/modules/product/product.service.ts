@@ -118,6 +118,13 @@ if (data.file) {
             ? Number(data.discountPrice)
             : null,
 
+        franchisePrice:
+          data.franchisePrice !== undefined &&
+          data.franchisePrice !== "" &&
+          data.franchisePrice !== null
+            ? Number(data.franchisePrice)
+            : null,
+
         stock: Number(data.stock),
 
         thumbnail: thumbnailUrl,
@@ -177,6 +184,7 @@ if (data.file) {
 
   static async getAll() {
     return prisma.product.findMany({
+      where: { isDeleted: false },
       include: {
         category: true,
         subcategory: true,
@@ -330,6 +338,16 @@ if (data.file) {
           : Number(data.discountPrice);
     }
 
+    if (
+      data.franchisePrice !== undefined
+    ) {
+      updateData.franchisePrice =
+        data.franchisePrice === "" ||
+        data.franchisePrice === null
+          ? null
+          : Number(data.franchisePrice);
+    }
+
     // -------------------------------------------------------
     // Stock
     // -------------------------------------------------------
@@ -463,10 +481,9 @@ if (data.file) {
   // =========================================================
 
   static async delete(id: number) {
-    return prisma.product.delete({
-      where: {
-        id,
-      },
+    return prisma.product.update({
+      where: { id },
+      data: { isDeleted: true },
     });
   }
 
@@ -551,6 +568,8 @@ if (data.file) {
       orderBy = { price: "desc" };
     }
 
+    where.isDeleted = false;
+
     return prisma.product.findMany({
       where,
       include: {
@@ -571,8 +590,8 @@ if (data.file) {
     return prisma.product.findFirst({
       where: {
         id,
-
         isActive: true,
+        isDeleted: false,
       },
 
       include: {

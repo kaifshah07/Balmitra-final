@@ -17,16 +17,19 @@ const app = (0, express_1.default)();
 app.use((0, helmet_1.default)());
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://balmitra.vercel.app",
+    "https://balmitra-final.vercel.app",
 ];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
+        if (!origin) {
+            return callback(null, true);
         }
-        else {
-            callback(new Error("Not allowed by CORS"));
+        if (allowedOrigins.includes(origin) ||
+            origin.endsWith(".vercel.app")) {
+            return callback(null, true);
         }
+        console.log("Blocked Origin:", origin);
+        return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
 }));

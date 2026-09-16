@@ -19,7 +19,7 @@ function normalizeSectionType(type) {
 class HomepageProductService {
     static async getProducts(type) {
         const normalized = normalizeSectionType(type);
-        const baseWhere = { isActive: true };
+        let baseWhere = { isActive: true, isDeleted: false };
         switch (normalized) {
             case "featured":
                 baseWhere.isFeatured = true;
