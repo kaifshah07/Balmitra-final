@@ -1,25 +1,50 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { API_URL } from "@/lib/api";
+import { API_URL, productImageUrl } from "@/lib/api";
 import { Package, ShoppingBag, FileText, TrendingUp, AlertTriangle, IndianRupee } from "lucide-react";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 export default function FranchiseDashboard() {
-  const [stats, setStats] = useState({
-    totalStock: 0,
-    lowStock: 0,
-    outOfStock: 0,
-    totalOrders: 0,
-    totalSales: 0,
+  const [data, setData] = useState({
+    stats: {
+      totalStock: 0,
+      lowStock: 0,
+      outOfStock: 0,
+      totalOrders: 0,
+      totalSales: 0,
+    },
+    recentOrders: [],
+    recentInvoices: []
   });
   
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // We would fetch actual stats here
-    setLoading(false);
+    fetchStats();
   }, []);
+
+  const fetchStats = async () => {
+    try {
+      const token = localStorage.getItem("franchiseToken");
+      const res = await fetch(`${API_URL}/franchise-dashboard`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const result = await res.json();
+      if (result.success) {
+        setData(result.data);
+      }
+    } catch (error) {
+      toast.error("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const { stats, recentOrders, recentInvoices } = data;
+
+  if (loading) return <div className="p-8 text-gray-500">Loading dashboard...</div>;
 
   return (
     <div className="p-8">
@@ -80,11 +105,42 @@ export default function FranchiseDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Recent B2B Orders</h2>
-          <p className="text-gray-500 text-sm">No orders yet.</p>
+          {recentOrders.length === 0 ? <p className="text-gray-500 text-sm">No orders yet.</p> : (
+            <div className="space-y-4">
+              {recentOrders.map(order => (
+                <div key={order.id} className="flex justify-between items-center border-b pb-2">
+                  <div>
+                    <p className="font-semibold">{order.orderNumber}</p>
+                    <p className="text-xs text-gray-500">{dayjs(order.createdAt).format('DD MMM, YYYY')}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold">₹{order.totalAmount}</p>
+                    <span className="text-xs px-2 py-1 bg-gray-100 rounded">{order.orderStatus}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+        
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 className="text-lg font-bold text-gray-800 mb-4">Recent POS Invoices</h2>
-          <p className="text-gray-500 text-sm">No invoices generated yet.</p>
+          {recentInvoices.length === 0 ? <p className="text-gray-500 text-sm">No invoices generated yet.</p> : (
+             <div className="space-y-4">
+              {recentInvoices.map(inv => (
+                <div key={inv.id} className="flex justify-between items-center border-b pb-2">
+                  <div>
+                    <p className="font-semibold">{inv.invoiceNumber}</p>
+                    <p className="text-xs text-gray-500">{inv.customerName || 'Walk-in'}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-green-600">₹{inv.totalAmount}</p>
+                    <p className="text-xs text-gray-500">{dayjs(inv.createdAt).format('DD MMM, YYYY')}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -13,15 +13,14 @@ export default function SiteLayout({
 }) {
   const pathname = usePathname();
 
-  const isAdminPage =
-    pathname.startsWith("/admin");
-
-  const isOrderSuccessPage =
-    pathname.startsWith("/order-success");
+  const isAdminPage = pathname.startsWith("/admin");
+  const isFranchisePage = pathname.startsWith("/franchise");
+  const isOrderSuccessPage = pathname.startsWith("/order-success");
 
   // Pages with custom layouts
   if (
     isAdminPage ||
+    isFranchisePage ||
     isOrderSuccessPage
   ) {
     return <>{children}</>;

@@ -68,6 +68,9 @@ export default function FranchiseLayout({ children }) {
           <Link href="/franchise/billing" className={`flex items-center gap-3 px-3 py-2 rounded-lg ${pathname === '/franchise/billing' ? 'bg-pink-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}>
             <FileText size={20} /> POS Billing
           </Link>
+          <Link href="/franchise/profile" className={`flex items-center gap-3 px-3 py-2 rounded-lg ${pathname === '/franchise/profile' ? 'bg-pink-600 text-white' : 'text-gray-300 hover:bg-gray-800'}`}>
+            <Store size={20} /> Shop Profile
+          </Link>
         </nav>
         
         <div className="p-4 border-t border-gray-800">

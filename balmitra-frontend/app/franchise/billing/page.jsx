@@ -9,7 +9,7 @@ export default function FranchiseBilling() {
   const [stock, setStock] = useState([]);
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [customerInfo, setCustomerInfo] = useState({ name: "", phone: "", paymentMethod: "CASH" });
+  const [customerInfo, setCustomerInfo] = useState({ name: "", phone: "", paymentMethod: "COD" });
 
   useEffect(() => {
     fetchStock();
@@ -93,7 +93,7 @@ export default function FranchiseBilling() {
       if (data.success) {
         toast.success("Invoice generated successfully!");
         setCart([]);
-        setCustomerInfo({ name: "", phone: "", paymentMethod: "CASH" });
+        setCustomerInfo({ name: "", phone: "", paymentMethod: "COD" });
         fetchStock();
       } else {
         toast.error(data.message || "Failed to generate invoice");
@@ -166,14 +166,14 @@ export default function FranchiseBilling() {
         </div>
 
         <div className="p-6 border-t border-gray-200 bg-gray-50 space-y-4">
-          <div className="space-y-2 mb-4">
-             <input type="text" placeholder="Customer Name" value={customerInfo.name} onChange={e => setCustomerInfo({...customerInfo, name: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg" />
-             <input type="text" placeholder="Customer Phone" value={customerInfo.phone} onChange={e => setCustomerInfo({...customerInfo, phone: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg" />
-             <select value={customerInfo.paymentMethod} onChange={e => setCustomerInfo({...customerInfo, paymentMethod: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg">
-                <option value="CASH">CASH</option>
-                <option value="CARD">CARD / UPI</option>
-             </select>
-          </div>
+            <div className="space-y-2 mb-4">
+               <input type="text" placeholder="Customer Name" value={customerInfo.name} onChange={e => setCustomerInfo({...customerInfo, name: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg" />
+               <input type="text" placeholder="Customer Phone" value={customerInfo.phone} onChange={e => setCustomerInfo({...customerInfo, phone: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg" />
+               <select value={customerInfo.paymentMethod} onChange={e => setCustomerInfo({...customerInfo, paymentMethod: e.target.value})} className="w-full border px-3 py-2 text-sm rounded-lg">
+                  <option value="COD">CASH</option>
+                  <option value="ONLINE">CARD / UPI</option>
+               </select>
+            </div>
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-500">Subtotal</span>
             <span className="font-semibold text-gray-700">₹{subTotal.toFixed(2)}</span>
