@@ -22,6 +22,7 @@ const franchise_auth_routes_1 = __importDefault(require("../modules/franchise-au
 const franchise_order_routes_1 = __importDefault(require("../modules/franchise-order/franchise-order.routes"));
 const franchise_inventory_routes_1 = __importDefault(require("../modules/franchise-inventory/franchise-inventory.routes"));
 const franchise_invoice_routes_1 = __importDefault(require("../modules/franchise-invoice/franchise-invoice.routes"));
+const franchise_dashboard_routes_1 = __importDefault(require("../modules/franchise-dashboard/franchise-dashboard.routes"));
 const public_category_routes_1 = __importDefault(require("../modules/category/public-category.routes"));
 const subcategory_routes_1 = __importDefault(require("../modules/subcategory/subcategory.routes"));
 const homepage_hero_routes_1 = __importDefault(require("../modules/homepage-hero/homepage-hero.routes"));
@@ -60,6 +61,7 @@ router.use("/franchise-auth", franchise_auth_routes_1.default);
 router.use("/franchise-orders", franchise_order_routes_1.default);
 router.use("/franchise-inventory", franchise_inventory_routes_1.default);
 router.use("/franchise-invoices", franchise_invoice_routes_1.default);
+router.use("/franchise-dashboard", franchise_dashboard_routes_1.default);
 router.use("/homepage/heroes", homepage_hero_routes_1.default);
 router.use("/homepage/advertisements", homepage_advertisement_routes_1.default);
 router.use("/homepage/sections", homepage_section_routes_1.default);

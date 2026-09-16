@@ -17,6 +17,7 @@ import franchiseAuthRoutes from "../modules/franchise-auth/franchise-auth.routes
 import franchiseOrderRoutes from "../modules/franchise-order/franchise-order.routes";
 import franchiseInventoryRoutes from "../modules/franchise-inventory/franchise-inventory.routes";
 import franchiseInvoiceRoutes from "../modules/franchise-invoice/franchise-invoice.routes";
+import franchiseDashboardRoutes from "../modules/franchise-dashboard/franchise-dashboard.routes";
 import publicCategoryRoutes from "../modules/category/public-category.routes";
 import subCategoryRoutes from "../modules/subcategory/subcategory.routes";
 import homepageHeroRoutes from "../modules/homepage-hero/homepage-hero.routes";
@@ -60,6 +61,7 @@ router.use("/franchise-auth", franchiseAuthRoutes);
 router.use("/franchise-orders", franchiseOrderRoutes);
 router.use("/franchise-inventory", franchiseInventoryRoutes);
 router.use("/franchise-invoices", franchiseInvoiceRoutes);
+router.use("/franchise-dashboard", franchiseDashboardRoutes);
 router.use("/homepage/heroes", homepageHeroRoutes);
 router.use("/homepage/advertisements", homepageAdvertisementRoutes);
 router.use("/homepage/sections", homepageSectionRoutes);
