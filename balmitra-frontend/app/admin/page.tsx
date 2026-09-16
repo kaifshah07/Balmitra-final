@@ -201,7 +201,7 @@ export default function AdminDashboard() {
         <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              Registered Parents
+              Registered Customers
             </span>
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-pink-50 text-pink-600">
               <Users size={20} />

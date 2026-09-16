@@ -10,6 +10,7 @@ export default function FranchiseBilling() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [customerInfo, setCustomerInfo] = useState({ name: "", phone: "", paymentMethod: "COD" });
+  const [invoiceData, setInvoiceData] = useState(null);
 
   useEffect(() => {
     fetchStock();
@@ -92,6 +93,15 @@ export default function FranchiseBilling() {
       const data = await res.json();
       if (data.success) {
         toast.success("Invoice generated successfully!");
+        setInvoiceData({
+          ...data.data,
+          cartItems: cart.map(item => ({ ...item, printPrice: getPrice(item) })),
+          subTotal,
+          taxAmount,
+          totalAmount,
+          customerName: customerInfo.name,
+          customerPhone: customerInfo.phone
+        });
         setCart([]);
         setCustomerInfo({ name: "", phone: "", paymentMethod: "COD" });
         fetchStock();
@@ -104,7 +114,8 @@ export default function FranchiseBilling() {
   };
 
   return (
-    <div className="flex h-full">
+    <>
+    <div className="flex h-full print:hidden">
       {/* Product List */}
       <div className="flex-1 p-6 overflow-auto border-r border-gray-200 bg-gray-50">
         <h2 className="text-2xl font-bold mb-6">POS Billing - Local Stock</h2>
@@ -196,5 +207,90 @@ export default function FranchiseBilling() {
         </div>
       </div>
     </div>
+
+    {/* Printable Invoice Modal */}
+    {invoiceData && (
+      <div className="fixed inset-0 bg-gray-500/50 z-[9999] p-8 overflow-auto print:p-0 print:bg-white">
+        <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-xl print:shadow-none print:border-none print:p-0">
+          <div className="flex justify-between items-start border-b pb-6 mb-6">
+            <div>
+              <h1 className="text-3xl font-black text-gray-900 tracking-tighter">TAX INVOICE</h1>
+              <p className="text-gray-500 mt-1">Invoice #{invoiceData.invoiceNumber}</p>
+              <p className="text-gray-500 text-sm">Date: {new Date(invoiceData.createdAt).toLocaleDateString()}</p>
+            </div>
+            <div className="text-right">
+              <h2 className="font-bold text-lg text-gray-800">Balmitra Franchise Store</h2>
+              <p className="text-gray-500 text-sm">B2C Retail Invoice</p>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h3 className="font-bold text-gray-700 uppercase text-xs tracking-wider mb-2">Billed To</h3>
+            <p className="font-medium text-lg">{invoiceData.customerName || "Walk-in Customer"}</p>
+            {invoiceData.customerPhone && <p className="text-gray-600">{invoiceData.customerPhone}</p>}
+          </div>
+
+          <table className="w-full text-left mb-8">
+            <thead className="border-b-2 border-gray-200">
+              <tr>
+                <th className="py-3 text-sm font-bold text-gray-600 uppercase tracking-wider">Item</th>
+                <th className="py-3 text-sm font-bold text-gray-600 uppercase tracking-wider text-center">Qty</th>
+                <th className="py-3 text-sm font-bold text-gray-600 uppercase tracking-wider text-right">Price</th>
+                <th className="py-3 text-sm font-bold text-gray-600 uppercase tracking-wider text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {invoiceData.cartItems.map((item, idx) => (
+                <tr key={idx}>
+                  <td className="py-4">
+                    <p className="font-semibold text-gray-800">{item.product.name}</p>
+                    <p className="text-xs text-gray-400">SKU: {item.product.sku}</p>
+                  </td>
+                  <td className="py-4 text-center font-medium">{item.cartQty}</td>
+                  <td className="py-4 text-right">₹{item.printPrice}</td>
+                  <td className="py-4 text-right font-bold">₹{(item.printPrice * item.cartQty).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="w-1/2 ml-auto space-y-3">
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span className="font-semibold">₹{invoiceData.subTotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-gray-600">
+              <span>GST (18%)</span>
+              <span className="font-semibold">₹{invoiceData.taxAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between border-t border-gray-200 pt-3">
+              <span className="font-black text-gray-900 text-lg">Grand Total</span>
+              <span className="font-black text-green-600 text-lg">₹{invoiceData.totalAmount.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center text-sm text-gray-400 border-t pt-6">
+            <p>Thank you for shopping at Balmitra!</p>
+            <p>This is a computer-generated invoice and does not require a physical signature.</p>
+          </div>
+
+          <div className="mt-8 flex justify-end gap-4 print:hidden">
+            <button 
+              onClick={() => setInvoiceData(null)} 
+              className="px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50"
+            >
+              Close
+            </button>
+            <button 
+              onClick={() => window.print()} 
+              className="px-6 py-2 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 flex items-center gap-2"
+            >
+              <Printer size={18} /> Print Document
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
