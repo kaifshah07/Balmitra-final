@@ -90,6 +90,16 @@ const menuSections = [
         icon: Store,
       },
       {
+        name: "Franchise Users",
+        href: "/admin/franchise-users",
+        icon: Users,
+      },
+      {
+        name: "Franchise Orders",
+        href: "/admin/franchise-orders",
+        icon: ShoppingBag,
+      },
+      {
         name: "Vendor Leads",
         href: "/admin/vendor-leads",
         icon: Briefcase,

@@ -35,6 +35,7 @@ export default function ProductModal({
     name: "",
     price: "",
     discountPrice: "",
+    franchisePrice: "",
     stock: "10",
     categoryId: "",
     subcategoryId: "",
@@ -58,6 +59,10 @@ export default function ProductModal({
         discountPrice:
           product.discountPrice !== null && product.discountPrice !== undefined
             ? String(product.discountPrice)
+            : "",
+        franchisePrice:
+          product.franchisePrice !== null && product.franchisePrice !== undefined
+            ? String(product.franchisePrice)
             : "",
         stock: String(product.stock ?? 10),
         categoryId: String(product.categoryId || ""),
@@ -89,6 +94,7 @@ export default function ProductModal({
         name: "",
         price: "",
         discountPrice: "",
+        franchisePrice: "",
         stock: "10",
         categoryId: defaultCat,
         subcategoryId: "",
@@ -357,7 +363,7 @@ export default function ProductModal({
               <span>2. Pricing & Inventory</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Original Price (MRP ₹) *
@@ -388,6 +394,22 @@ export default function ProductModal({
                   }
                   placeholder="799"
                   className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-pink-700 mb-1">
+                  Franchise B2B Price (₹)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={form.franchisePrice}
+                  onChange={(e) =>
+                    setForm({ ...form, franchisePrice: e.target.value })
+                  }
+                  placeholder="699"
+                  className="w-full rounded-xl border border-pink-200 bg-pink-50 px-3.5 py-2.5 text-xs outline-none transition focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20"
                 />
               </div>
 
