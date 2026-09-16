@@ -9,14 +9,30 @@ export class DashboardController {
       const [
         totalProducts,
         totalCategories,
+        totalOrders,
+        totalCustomers,
+        pendingOrders,
+        completedOrders,
+        paidOrders
       ] = await Promise.all([
-        prisma.product.count(),
+        prisma.product.count({ where: { isDeleted: false } }),
         prisma.category.count(),
+        prisma.order.count(),
+        prisma.customer.count(),
+        prisma.order.count({ where: { orderStatus: { in: ["PENDING", "CONFIRMED", "PACKED", "SHIPPED"] } } }),
+        prisma.order.count({ where: { orderStatus: "DELIVERED" } }),
+        prisma.order.findMany({
+          where: { paymentStatus: "PAID" },
+          select: { totalAmount: true }
+        })
       ]);
+
+      const totalRevenue = paidOrders.reduce((sum, order) => sum + Number(order.totalAmount), 0);
 
       // Recent Products
       const recentProducts = await prisma.product.findMany({
         take: 5,
+        where: { isDeleted: false },
         orderBy: {
           createdAt: "desc",
         },
@@ -28,8 +44,9 @@ export class DashboardController {
       // Low Stock Products
       const lowStockProducts = await prisma.product.findMany({
         where: {
+          isDeleted: false,
           stock: {
-            lte: 5,
+            lte: 10,
           },
         },
         orderBy: {
@@ -46,13 +63,11 @@ export class DashboardController {
         statistics: {
           totalProducts,
           totalCategories,
-
-          // These will be implemented later
-          totalOrders: 0,
-          totalCustomers: 0,
-          totalRevenue: 0,
-          pendingOrders: 0,
-          completedOrders: 0,
+          totalOrders,
+          totalCustomers,
+          totalRevenue: totalRevenue.toFixed(2),
+          pendingOrders,
+          completedOrders,
         },
 
         recentProducts,
